@@ -1,12 +1,110 @@
-<h2>Student Login</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Login • BioVote</title>
 
-<form method="POST">
-    <input name="uid" placeholder="Enter UID">
-    <button type="submit">Login</button>
-</form>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ffb6d9, #ffd6ec);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-<p style="color:red">{{ messages[0] }}</p>
-{% endif %}
-{% endwith %}
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            width: 320px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 25px;
+            color: #ff4da6;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            margin-bottom: 15px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border: 1px solid #ff4da6;
+            box-shadow: 0 0 6px rgba(255,77,166,0.3);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            background: #ff4da6;
+            color: white;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #e60073;
+        }
+
+        .flash {
+            margin-top: 15px;
+            color: red;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .tagline {
+            font-size: 13px;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: -10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-card">
+
+    <h2>🗳 BioVote Student Login</h2>
+
+    <form method="POST">
+        <input name="uid" placeholder="Enter College UID" pattern="[0-9]+" title="Numbers only" required>
+        <div class="hint">Example: 111723043010</div>
+
+        <button type="submit">Login & Scan Fingerprint</button>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="flash">{{ messages[0] }}</div>
+    {% endif %}
+    {% endwith %}
+
+    <div class="tagline">
+        Secure biometric voting system
+    </div>
+
+</div>
+
+</body>
+</html>

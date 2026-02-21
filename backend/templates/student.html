@@ -11,6 +11,21 @@
             padding: 40px;
         }
 
+        .logout {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #ff4da6;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .flash {
+            color: green;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
         .container {
             display: flex;
             justify-content: center;
@@ -47,46 +62,35 @@
         button:hover {
             background: #e60073;
         }
-
-        .msg {
-            background: #4CAF50;
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: inline-block;
-        }
     </style>
 </head>
 
 <body>
 
+<a class="logout" href="/logout">Logout</a>
+
 <h2>🗳 Student Voting Panel</h2>
 
+<!-- flash message -->
 {% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <div class="msg">{{ messages[0] }}</div>
-  {% endif %}
+{% if messages %}
+<div class="flash">{{ messages[0] }}</div>
+{% endif %}
 {% endwith %}
 
 <form method="POST">
-
 <div class="container">
 
-{% for c in candidates %}
+    {% set candidates = ["Isabel Conklin","Conrad Fisher","Jeremiah Fisher","Taylor Jewel","Steven Conklin"] %}
+
+    {% for c in candidates %}
     <div class="card">
-
-        <img src="{{ url_for('static', filename='uploads/' + images[c]) }}">
-
-        <button type="submit" name="vote" value="{{ c }}">
-            {{ c }}
-        </button>
-
+        <img src="{{ url_for('static', filename='uploads/' + images.get(c, '')) if images.get(c) else 'https://via.placeholder.com/120' }}">
+        <button name="vote" value="{{ c }}">{{ c }}</button>
     </div>
-{% endfor %}
+    {% endfor %}
 
 </div>
-
 </form>
 
 </body>

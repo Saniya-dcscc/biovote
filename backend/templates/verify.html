@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Fingerprint Verification</title>
+
+<style>
+body{
+margin:0;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#ffb6d9,#ffd6ec);
+font-family:Arial;
+}
+
+.card{
+background:white;
+padding:40px;
+border-radius:16px;
+width:330px;
+text-align:center;
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
+}
+
+.fingerprint{
+width:120px;
+margin:20px auto;
+animation:pulse 1.4s infinite;
+}
+
+@keyframes pulse{
+0%{transform:scale(1);opacity:.6}
+50%{transform:scale(1.15);opacity:1}
+100%{transform:scale(1);opacity:.6}
+}
+
+.progress{
+height:8px;
+background:#eee;
+border-radius:10px;
+overflow:hidden;
+margin-top:20px;
+}
+
+.bar{
+height:100%;
+width:0%;
+background:#ff4da6;
+animation:scan 3s forwards;
+}
+
+@keyframes scan{
+from{width:0}
+to{width:100%}
+}
+
+.msg{
+margin-top:15px;
+font-weight:bold;
+display:none;
+}
+
+.success{color:green;}
+.fail{color:red;}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>🔐 Fingerprint Scan</h2>
+
+<img class="fingerprint"
+src="https://cdn-icons-png.flaticon.com/512/3062/3062634.png">
+
+<div class="progress"><div class="bar"></div></div>
+
+<div id="success" class="msg success">✅ Fingerprint Matched</div>
+<div id="fail" class="msg fail">❌ Fingerprint Not Recognized</div>
+
+</div>
+
+<script>
+setTimeout(()=>{
+
+fetch("/verify_fp",{method:"POST"})
+.then(r=>r.text())
+.then(res=>{
+
+if(res==="success"){
+document.getElementById("success").style.display="block";
+
+setTimeout(()=>{
+window.location.href="/student";
+},1200);
+
+}else{
+document.getElementById("fail").style.display="block";
+
+setTimeout(()=>{
+location.reload();
+},1500);
+}
+
+});
+
+},3000);
+</script>
+
+</body>
+</html>
