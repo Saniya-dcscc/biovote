@@ -1,26 +1,13 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 import os
 
 app = Flask(__name__)
 app.secret_key = "biovote_secret"
 
-# folder for candidate images
-UPLOAD_FOLDER = "static/uploads"
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+# Fake fingerprint database (UID → fingerprint registered)
+fingerprints = {}
 
-# candidates
-candidates = [
-    "Isabel Conklin",
-    "Conrad Fisher",
-    "Jeremiah Fisher",
-    "Taylor Jewel",
-    "Steven Conklin"
-]
-
-# store votes (temporary)
-votes = {c: 0 for c in candidates}
-
-# store image filenames
+# Candidate images
 images = {
     "Isabel Conklin": "isabel.jpg",
     "Conrad Fisher": "conrad.jpg",
@@ -29,25 +16,80 @@ images = {
     "Steven Conklin": "steven.jpg"
 }
 
+votes = {}
 
-@app.route("/student", methods=["GET", "POST"])
-def student():
+# ================= LOGIN =================
+@app.route("/", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        uid = request.form.get("uid")
+
+        if not uid:
+            flash("Enter UID")
+            return redirect(url_for("login"))
+
+        session["uid"] = uid
+
+        # If fingerprint not registered → go register
+        if uid not in fingerprints:
+            return redirect(url_for("register_fingerprint"))
+
+        # else go scan
+        return redirect(url_for("scan_fingerprint"))
+
+    return render_template("login.html")
+
+
+# ================= REGISTER FINGERPRINT =================
+@app.route("/register_fp", methods=["GET", "POST"])
+def register_fingerprint():
+    if "uid" not in session:
+        return redirect(url_for("login"))
 
     if request.method == "POST":
-        vote = request.form.get("vote")
+        uid = session["uid"]
+        fingerprints[uid] = True
+        flash("Fingerprint registered successfully")
+        return redirect(url_for("scan_fingerprint"))
 
-        if vote in votes:
-            votes[vote] += 1
-            flash(f"✅ Your vote for {vote} has been recorded!")
+    return render_template("register_fp.html")
 
+
+# ================= SCAN FINGERPRINT =================
+@app.route("/scan_fp", methods=["GET", "POST"])
+def scan_fingerprint():
+    if "uid" not in session:
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
         return redirect(url_for("student"))
 
-    return render_template("student.html", candidates=candidates, images=images)
+    return render_template("scan_fp.html")
 
 
-@app.route("/")
-def home():
-    return redirect(url_for("student"))
+# ================= STUDENT VOTING =================
+@app.route("/student", methods=["GET", "POST"])
+def student():
+    if "uid" not in session:
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        candidate = request.form.get("vote")
+
+        if session["uid"] in votes:
+            flash("You already voted")
+        else:
+            votes[session["uid"]] = candidate
+            flash(f"Vote recorded for {candidate}")
+
+    return render_template("student.html", images=images)
+
+
+# ================= LOGOUT =================
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
 
 
 if __name__ == "__main__":
