@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Faculty Dashboard - Cloud BioVote</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #ffd6e7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .box {
+            background: white;
+            padding: 30px;
+            width: 450px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        h3 {
+            color: #ff4d88;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+    <h2>Faculty Dashboard</h2>
+
+    <h3>Live Vote Count</h3>
+
+    <p>Candidate A : {{ votes["Candidate A"] }}</p>
+    <p>Candidate B : {{ votes["Candidate B"] }}</p>
+    <p>Candidate C : {{ votes["Candidate C"] }}</p>
+
+    <br>
+    <a href="/logout">Logout</a>
+</div>
+
+</body>
+</html>

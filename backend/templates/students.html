@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Voting</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #ffe6f0;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            width: 200px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px;
+            width: 100%;
+            background: #ff4da6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #e60073;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>🗳 Student Voting Panel</h2>
+
+<form method="POST">
+
+<div class="container">
+
+    <div class="card">
+        <img src="{{ url_for('static', filename='uploads/' + images['Isabel Conklin']) if images['Isabel Conklin'] else 'https://via.placeholder.com/120' }}">
+        <button name="vote" value="Isabel Conklin">Isabel Conklin</button>
+    </div>
+
+    <div class="card">
+        <img src="{{ url_for('static', filename='uploads/' + images['Conrad Fisher']) if images['Conrad Fisher'] else 'https://via.placeholder.com/120' }}">
+        <button name="vote" value="Conrad Fisher">Conrad Fisher</button>
+    </div>
+
+    <div class="card">
+        <img src="{{ url_for('static', filename='uploads/' + images['Jeremiah Fisher']) if images['Jeremiah Fisher'] else 'https://via.placeholder.com/120' }}">
+        <button name="vote" value="Jeremiah Fisher">Jeremiah Fisher</button>
+    </div>
+
+    <div class="card">
+        <img src="{{ url_for('static', filename='uploads/' + images['Taylor Jewel']) if images['Taylor Jewel'] else 'https://via.placeholder.com/120' }}">
+        <button name="vote" value="Taylor Jewel">Taylor Jewel</button>
+    </div>
+
+    <div class="card">
+        <img src="{{ url_for('static', filename='uploads/' + images['Steven Conklin']) if images['Steven Conklin'] else 'https://via.placeholder.com/120' }}">
+        <button name="vote" value="Steven Conklin">Steven Conklin</button>
+    </div>
+
+</div>
+
+</form>
+
+</body>
+</html>
