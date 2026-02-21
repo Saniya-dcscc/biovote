@@ -47,6 +47,15 @@
         button:hover {
             background: #e60073;
         }
+
+        .msg {
+            background: #4CAF50;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
     </style>
 </head>
 
@@ -54,34 +63,27 @@
 
 <h2>🗳 Student Voting Panel</h2>
 
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="msg">{{ messages[0] }}</div>
+  {% endif %}
+{% endwith %}
+
 <form method="POST">
 
 <div class="container">
 
+{% for c in candidates %}
     <div class="card">
-        <img src="{{ url_for('static', filename='uploads/' + images['Isabel Conklin']) if images['Isabel Conklin'] else 'https://via.placeholder.com/120' }}">
-        <button name="vote" value="Isabel Conklin">Isabel Conklin</button>
-    </div>
 
-    <div class="card">
-        <img src="{{ url_for('static', filename='uploads/' + images['Conrad Fisher']) if images['Conrad Fisher'] else 'https://via.placeholder.com/120' }}">
-        <button name="vote" value="Conrad Fisher">Conrad Fisher</button>
-    </div>
+        <img src="{{ url_for('static', filename='uploads/' + images[c]) }}">
 
-    <div class="card">
-        <img src="{{ url_for('static', filename='uploads/' + images['Jeremiah Fisher']) if images['Jeremiah Fisher'] else 'https://via.placeholder.com/120' }}">
-        <button name="vote" value="Jeremiah Fisher">Jeremiah Fisher</button>
-    </div>
+        <button type="submit" name="vote" value="{{ c }}">
+            {{ c }}
+        </button>
 
-    <div class="card">
-        <img src="{{ url_for('static', filename='uploads/' + images['Taylor Jewel']) if images['Taylor Jewel'] else 'https://via.placeholder.com/120' }}">
-        <button name="vote" value="Taylor Jewel">Taylor Jewel</button>
     </div>
-
-    <div class="card">
-        <img src="{{ url_for('static', filename='uploads/' + images['Steven Conklin']) if images['Steven Conklin'] else 'https://via.placeholder.com/120' }}">
-        <button name="vote" value="Steven Conklin">Steven Conklin</button>
-    </div>
+{% endfor %}
 
 </div>
 
